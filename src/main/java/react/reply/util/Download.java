@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -15,10 +16,13 @@ import jakarta.servlet.http.HttpServletResponse;
 @Controller
 public class Download {
 
+	@Value("${file.upload.path}")
+	private String uploadPath;
+
 	@GetMapping("/download")
 	public void download(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		response.setContentType("text/html;charset=utf-8");
-		String file_repo = "D:/upload"; // 배포시 외부 경로 설정
+		String file_repo = uploadPath; // 배포시 외부 경로 설정
 		String filename_org = request.getParameter("filename_org");
 		String filename_real = request.getParameter("filename_real");
 		// 한글처리
