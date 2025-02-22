@@ -2,6 +2,7 @@ package react.reply.comment;
 
 import java.sql.Timestamp;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.CurrentTimestamp;
 
 import jakarta.persistence.Column;
@@ -29,7 +30,7 @@ public class CommentEntity {
 	@Column(name="parent_no")
 	private int parentno;
 	private String content;
-	@CurrentTimestamp
+	@CreationTimestamp
 	private Timestamp writedate;
 	
 	@ManyToOne

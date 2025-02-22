@@ -3,6 +3,7 @@ package react.reply.reply;
 import java.sql.Timestamp;
 import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.CurrentTimestamp;
 
 import jakarta.persistence.Entity;
@@ -30,7 +31,7 @@ public class ReplyEntity {
 	private int no;
 	private String title;
 	private String content;
-	@CurrentTimestamp
+	@CreationTimestamp
 	private Timestamp writedate;
 	private int viewcnt;
 	private String filename_org;

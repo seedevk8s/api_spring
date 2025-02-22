@@ -16,6 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `api_user`
+--
+
+DROP TABLE IF EXISTS `api_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_user` (
+  `client_id` varchar(255) NOT NULL,
+  `client_secret` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`client_id`),
+  UNIQUE KEY `client_id_UNIQUE` (`client_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_user`
+--
+
+LOCK TABLES `api_user` WRITE;
+/*!40000 ALTER TABLE `api_user` DISABLE KEYS */;
+INSERT INTO `api_user` VALUES ('client_id','$2a$10$MyYOQTzL5C7m2youJnGMg..2Z1uPiEP0l7VAPNH/JsBv3MXNSPeVO');
+/*!40000 ALTER TABLE `api_user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `comment`
 --
 
@@ -119,4 +144,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-15 17:30:38
+-- Dump completed on 2025-02-23  4:31:28
