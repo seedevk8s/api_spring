@@ -70,9 +70,8 @@ public class TokenCheckFilter extends OncePerRequestFilter {
             throw new AccessTokenException(AccessTokenException.TOKEN_ERROR.EXPIRED);
         } catch (Exception e) {
             log.info("Exception......................");
+            throw new AccessTokenException(AccessTokenException.TOKEN_ERROR.UNACCEPT);
         }
-
-        return null;
     }
 
 }
