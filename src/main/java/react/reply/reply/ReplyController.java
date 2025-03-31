@@ -22,7 +22,6 @@ import react.reply.user.UserEntity;
 import react.reply.util.PageMaker;
 import react.reply.util.PageVO;
 
-@CrossOrigin(origins = {"http://localhost:3000/","http://localhost/"})
 @RestController
 @RequestMapping("/api/reply")
 public class ReplyController {

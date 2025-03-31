@@ -1,31 +1,21 @@
 package react.reply.security;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import lombok.extern.java.Log;
-
-import java.io.IOException;
-import java.util.Map;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -47,7 +37,10 @@ public class SecurityConfig {
 				//.requestMatchers("/boards/register").hasAnyRole("BASIC","MANAGER","ADMIN")
 				.anyRequest().permitAll()
 		);
-		http.csrf(csrf->csrf.disable()); // 토큰 미사용 설정
+		http.csrf(csrf->csrf.disable()); // CSRF 토큰 미사용 설정
+
+		// CORS 설정
+		http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
 		http.formLogin(c->{
 			// 이전페이지가 없는 상태에서 로그인성공 후 이동되는 페이지
@@ -86,4 +79,16 @@ public class SecurityConfig {
 		return new BCryptPasswordEncoder();
 	}
 
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowCredentials(true);
+		configuration.addAllowedOriginPattern("http://localhost:3000/"); // 모든 도메인 허용
+		configuration.addAllowedHeader("*"); // 모든 헤더 허용
+		configuration.addAllowedMethod("*"); // 모든 HTTP 메서드 허용
+
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
 }
