@@ -32,26 +32,27 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		log.info("security config...............");
-		
-		http.authorizeHttpRequests(auth->auth
-				//.requestMatchers("/boards/register").hasAnyRole("BASIC","MANAGER","ADMIN")
-				.anyRequest().permitAll()
-		);
-		http.csrf(csrf->csrf.disable()); // CSRF 토큰 미사용 설정
+
+		http.authorizeHttpRequests(auth -> auth
+				// .requestMatchers("/boards/register").hasAnyRole("BASIC","MANAGER","ADMIN")
+				.anyRequest().permitAll());
+		http.csrf(csrf -> csrf.disable()); // CSRF 토큰 미사용 설정
 
 		// CORS 설정
 		http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
-		http.formLogin(c->{
+		http.formLogin(c -> {
 			// 이전페이지가 없는 상태에서 로그인성공 후 이동되는 페이지
-//            c.loginPage("/login");
+			// c.loginPage("/login");
 		});
 		// 로그아웃 설정 (post로만 접근 가능/토큰 필요)
-		http.logout(logout->{});
+		http.logout(logout -> {
+		});
 
 		// JWT 관련 설정
 		// AuthenticationManager 설정
-		AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+		AuthenticationManagerBuilder authenticationManagerBuilder = http
+				.getSharedObject(AuthenticationManagerBuilder.class);
 		authenticationManagerBuilder.userDetailsService(apiUserDetailsService).passwordEncoder(passwordEncoder());
 
 		// AuthenticationManager 객체 생성
@@ -59,7 +60,7 @@ public class SecurityConfig {
 		http.authenticationManager(authenticationManager);
 
 		// 필터
-		ApiLoginFilter apiLoginFilter = new ApiLoginFilter("/auth"); // 토큰발급URL (http://localhost:8080/generateToken)
+		ApiLoginFilter apiLoginFilter = new ApiLoginFilter("/auth"); // 토큰발급URL (http://localhost:8080/auth)
 		apiLoginFilter.setAuthenticationManager(authenticationManager);
 		apiLoginFilter.setAuthenticationSuccessHandler(new APILoginSuccessHandler(jwtUtil));
 
@@ -70,10 +71,9 @@ public class SecurityConfig {
 		TokenCheckFilter tokenCheckFilter = new TokenCheckFilter(jwtUtil);
 		http.addFilterBefore(tokenCheckFilter, UsernamePasswordAuthenticationFilter.class);
 
-
 		return http.build();
 	}
-	
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
