@@ -1,0 +1,91 @@
+graph TB
+    subgraph "Frontend"
+        React[React Application]
+    end
+    
+    subgraph "Spring Boot API Server"
+        subgraph "Presentation Layer"
+            RC[ReplyController<br>/api/reply]
+            CC[CommentController<br>/api/comment]
+        end
+        
+        subgraph "Security Layer"
+            SF[SecurityFilterChain]
+            JWT[JWTUtil]
+            ALF[ApiLoginFilter]
+            TCF[TokenCheckFilter]
+            AUD[ApiUserDetailsService]
+        end
+        
+        subgraph "Business/Service Layer"
+            RR[ReplyRepository]
+            CR[CommentRepository]
+            UR[ApiUserRepository]
+        end
+        
+        subgraph "Data Layer"
+            RE[ReplyEntity]
+            CE[CommentEntity]
+            UE[UserEntity]
+        end
+        
+        subgraph "Utility"
+            PM[PageMaker]
+            PV[PageVO]
+            DL[Download]
+        end
+    end
+    
+    subgraph "Database"
+        MySQL[(MySQL Database<br>react_reply)]
+        Tables["`
+        Tables:
+        • reply (게시글)
+        • comment (댓글)
+        • user (사용자)
+        `"]
+    end
+    
+    subgraph "File System"
+        FS[File Upload Storage<br>D:\upload]
+    end
+    
+    %% Connections
+    React -->|HTTP/REST API| RC
+    React -->|HTTP/REST API| CC
+    React -->|CORS Enabled| SF
+    
+    RC --> RR
+    CC --> CR
+    
+    SF --> ALF
+    SF --> TCF
+    ALF --> JWT
+    TCF --> JWT
+    ALF --> AUD
+    AUD --> UR
+    
+    RR --> RE
+    CR --> CE
+    UR --> UE
+    
+    RC --> PM
+    CC --> PM
+    PM --> PV
+    
+    RE -->|JPA/Hibernate| MySQL
+    CE -->|JPA/Hibernate| MySQL
+    UE -->|JPA/Hibernate| MySQL
+    
+    RC -->|File Upload| FS
+    RC --> DL
+    
+    %% Entity Relationships
+    RE -.->|ManyToOne| UE
+    CE -.->|ManyToOne| UE
+    RE -.->|OneToMany| CE
+    
+    style React fill:#61dafb
+    style MySQL fill:#4479a1
+    style SF fill:#6db33f
+    style JWT fill:#000000,color:#ffffff
