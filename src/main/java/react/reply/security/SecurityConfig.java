@@ -85,6 +85,7 @@ public class SecurityConfig {
 		configuration.setAllowCredentials(true);
 		configuration.addAllowedOriginPattern("http://localhost:3000/"); //이 페이지에서만 요청했을때 허용
 		configuration.addAllowedOriginPattern("http://localhost/"); //이 페이지에서만 요청했을때 허용
+		configuration.addAllowedOriginPattern("http://13.124.227.32/"); //이 페이지에서만 요청했을때 허용 (AWS FrontEnd)
 		//configuration.addAllowedOriginPattern("*"); // 모든 도메인 허용
 		configuration.addAllowedHeader("*"); // 모든 헤더 허용
 		configuration.addAllowedMethod("*"); // 모든 HTTP 메서드 허용
