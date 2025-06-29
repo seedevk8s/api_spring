@@ -84,6 +84,7 @@ public class SecurityConfig {
 		CorsConfiguration configuration = new CorsConfiguration();
 		configuration.setAllowCredentials(true);
 		configuration.addAllowedOriginPattern("http://localhost:3000/"); //이 페이지에서만 요청했을때 허용
+		configuration.addAllowedOriginPattern("http://localhost/"); //이 페이지에서만 요청했을때 허용
 		//configuration.addAllowedOriginPattern("*"); // 모든 도메인 허용
 		configuration.addAllowedHeader("*"); // 모든 헤더 허용
 		configuration.addAllowedMethod("*"); // 모든 HTTP 메서드 허용
